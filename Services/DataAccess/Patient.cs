@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace RethinkSample.Services.DataAccess
+﻿namespace RethinkSample.Services.DataAccess
 {
     public class Patient
     {
