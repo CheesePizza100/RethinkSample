@@ -4,10 +4,14 @@ namespace RethinkSample.Services.DataAccess;
 
 public class PatientContext : DbContext
 {
-    public DbSet<Patient> Patients { get; set; }
+    public virtual DbSet<Patient> Patients { get; set; }
 
     public PatientContext(DbContextOptions<PatientContext> options) 
         : base(options)
+    {
+    }
+
+    public PatientContext()
     {
     }
 

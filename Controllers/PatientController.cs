@@ -24,14 +24,16 @@ public class PatientController : ControllerBase
     {
         if (id <= 0) return BadRequest();
 
-        return Ok(_context.Patients.Where(x => x.Id == id).Select(x => new PatientViewModel()
+        var patient = _context.Patients.First(x => x.Id == id);
+
+        return Ok(new PatientViewModel()
         {
-            Id = x.Id,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Gender = x.Gender,
-            Birthday = x.Birthday
-        }));
+            Id = patient.Id,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            Gender = patient.Gender,
+            Birthday = patient.Birthday
+        });
     }
 
     [HttpGet]
