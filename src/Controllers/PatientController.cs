@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
+using RethinkSample.Extensions;
 using RethinkSample.Mapping;
 using RethinkSample.Models;
 using RethinkSample.Services.DataAccess;
@@ -20,6 +21,20 @@ public class PatientController : ControllerBase
 
     [HttpGet]
     [Route("get")]
+    public IActionResult GetPatients()
+    {
+        return Ok(_context.Patients.Select(x => new PatientViewModel()
+        {
+            Id = x.Id, 
+            FirstName = x.FirstName, 
+            LastName = x.LastName, 
+            Gender = x.Gender, 
+            Birthday = x.Birthday
+        }).ToList());
+    }
+
+    [HttpGet]
+    [Route("get/{id}")]
     public IActionResult GetPatient(int id)
     {
         if (id <= 0) return BadRequest();
@@ -36,22 +51,9 @@ public class PatientController : ControllerBase
         });
     }
 
-    [HttpGet]
-    [Route("getpatients")]
-    public IActionResult GetPatients()
-    {
-        return Ok(_context.Patients.Select(x => new PatientViewModel()
-        {
-            Id = x.Id, 
-            FirstName = x.FirstName, 
-            LastName = x.LastName, 
-            Gender = x.Gender, 
-            Birthday = x.Birthday
-        }).ToList());
-    }
 
     [HttpPost]
-    [Route("/savepatient")]
+    [Route("/post/patient")]
     public IActionResult SavePatient(NewPatientViewModel model)
     {
         if (!ModelState.IsValid)
@@ -74,7 +76,7 @@ public class PatientController : ControllerBase
     }
 
     [HttpPost]
-    [Route("/savepatientcsv")]
+    [Route("/post/patients")]
     public IActionResult SavePatientCsv(IFormFile file)
     {
         using var reader = new StreamReader(file.OpenReadStream());
